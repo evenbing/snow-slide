@@ -4,6 +4,7 @@ package com.wottui.snowslide;
 import com.wottui.utils.LogHelper;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -26,8 +27,7 @@ class Monitor {
     private int successNum;
     private int failureNum;
     private String testName;
-
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyyMMdd hh:mm:ss");
+    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     public Monitor(int threadMax, int taskExecuteNumPerThread, String testName) {
         this.currentThreadCount = 0;
@@ -47,7 +47,6 @@ class Monitor {
     public void incAlreadyExecuteTaskNum() {
         lockTaskInc.lock();
         alreadyExecuteTaskNum++;
-        System.out.println(alreadyExecuteTaskNum);
         lockTaskInc.unlock();
     }
 
@@ -84,18 +83,22 @@ class Monitor {
     public void calculate() {
         String endAtDisplay = FORMAT.format(endAt);
         String startAtDisplay = FORMAT.format(startAt);
-        long executeAllMilliTime = endAt - startAt;
-        BigDecimal bigDecimalExecuteAllMilliTime = new BigDecimal(executeAllMilliTime);
-        BigDecimal executeCount = new BigDecimal(threadMax * taskExecuteNumPerThread);
-        double averagePerExecuteMilli = bigDecimalExecuteAllMilliTime.divide(executeCount).doubleValue();
-        double passRate = new BigDecimal(successNum).divide(new BigDecimal(startAtDisplay + failureNum)).doubleValue();
-        System.out.print("TaskName:" + testName + ",");
-        System.out.print("startAt:" + startAtDisplay + ",");
-        System.out.print("endAt:" + endAtDisplay + ",");
-        System.out.print("times:" + testName + "ms,");
-        System.out.print("avgPerTimes:" + averagePerExecuteMilli + ",");
-        System.out.print("qualified-num:" + successNum + ",");
-        System.out.print("unqualified-num" + failureNum + ",");
-        System.out.print("pass rate" + passRate * 100 + "%");
+        BigDecimal executeAllMilliTime = new BigDecimal(endAt - startAt);
+        BigDecimal executeCount = new BigDecimal(successNum + failureNum);
+        BigDecimal averagePerExecuteMilli = executeAllMilliTime.divide(executeCount,10,BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal passRate = new BigDecimal(successNum).divide(new BigDecimal(successNum + failureNum),2,BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal allSecond = executeAllMilliTime.divide(new BigDecimal(1000)).setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal QPS = executeCount.divide(allSecond,0,BigDecimal.ROUND_HALF_DOWN);
+
+        System.out.println("TaskName: " + testName + "");
+        System.out.println("StartAt: " + startAtDisplay + "");
+        System.out.println("EndAt: " + endAtDisplay + "");
+        System.out.println("Times: " + executeAllMilliTime + "ms");
+        System.out.println("AllRequest-num: " + executeCount);
+        System.out.println("AvgPerTimes: " + averagePerExecuteMilli + "ms");
+        System.out.println("Qualified-num: " + successNum + "");
+        System.out.println("Unqualified-num: " + failureNum + "");
+        System.out.println("Pass rate:" + passRate.doubleValue() * 100 + "%");
+        System.out.println("QPS: " + QPS.doubleValue());
     }
 }

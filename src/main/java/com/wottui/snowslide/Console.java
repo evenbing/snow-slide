@@ -37,6 +37,11 @@ public class Console {
                     monitor.calculate();
                     break;
                 }
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             LogHelper.debug(this.getClass(), "Console exit!!!!");
         }
