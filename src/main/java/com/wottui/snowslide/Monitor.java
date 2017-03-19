@@ -105,8 +105,8 @@ class Monitor {
         BigDecimal executeAllMilliTimeBig = new BigDecimal(executeAllMilliTime);
         BigDecimal averagePerExecuteMilli = executeAllMilliTimeBig.divide(executeCount, 2, BigDecimal.ROUND_HALF_DOWN);
         BigDecimal passRate = new BigDecimal(successNum).divide(new BigDecimal(successNum + failureNum), 2, BigDecimal.ROUND_HALF_DOWN);
-        BigDecimal allSecond = executeAllMilliTimeBig.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_DOWN);
-        BigDecimal QPS = executeCount.divide(allSecond, 0, BigDecimal.ROUND_HALF_DOWN);
+        //BigDecimal allSecond = executeAllMilliTimeBig.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_DOWN);
+        //BigDecimal QPS = executeCount.divide(allSecond, 0, BigDecimal.ROUND_HALF_DOWN);
 
         System.out.println("TaskName: " + testName + "");
         System.out.println("StartAt: " + startAtDisplay + "");
@@ -117,7 +117,7 @@ class Monitor {
         System.out.println("Request-Qualified-num: " + successNum + "");
         System.out.println("Request-Unqualified-num: " + failureNum + "");
         System.out.println("Request-Pass rate:" + passRate.doubleValue() * 100 + "%");
-        System.out.println("QPS: " + QPS.doubleValue());
+        //System.out.println("QPS: " + QPS.doubleValue());
     }
 
     private static class Consumer implements Runnable {
