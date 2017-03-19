@@ -26,6 +26,6 @@ class Notifier implements Runnable {
                 }
             }
         }
-        LogHelper.debug(this.getClass(), "Notifier finished its mission!!!!!!");
+        LogHelper.info(this.getClass(), "Notifier finished its mission!!!!!!");
     }
 }

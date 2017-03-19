@@ -23,6 +23,8 @@ public class StopWatch {
     public void stop() {
         monitor.incAlreadyExecuteTaskNum();
         stopAt = System.currentTimeMillis();
+        long executeTime = stopAt-startAt;
+        monitor.saveExecuteTime(executeTime);
         if (stopAt - startAt > taskExecuteMaxMilliLimit) {
             markFailure();
         } else {
