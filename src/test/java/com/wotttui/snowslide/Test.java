@@ -10,11 +10,11 @@ import com.wottui.snowslide.SnowTaskRunner;
  */
 public class Test {
     public static void main(String[] args) {
-        new SnowSlideTester(1000,2,100,"TestApi").startTest(new SnowTaskRunner() {
+        new SnowSlideTester(10000,100,100,"TestApi").startTest(new SnowTaskRunner() {
             @Override
             public void runSnowTask() {
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

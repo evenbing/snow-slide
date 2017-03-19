@@ -103,7 +103,7 @@ class Monitor {
         String startAtDisplay = FORMAT.format(startAt);
         BigDecimal executeCount = new BigDecimal(successNum + failureNum);
         BigDecimal executeAllMilliTimeBig = new BigDecimal(executeAllMilliTime);
-        BigDecimal averagePerExecuteMilli = executeCount.divide(executeAllMilliTimeBig, 2, BigDecimal.ROUND_HALF_DOWN);
+        BigDecimal averagePerExecuteMilli = executeAllMilliTimeBig.divide(executeCount, 2, BigDecimal.ROUND_HALF_DOWN);
         BigDecimal passRate = new BigDecimal(successNum).divide(new BigDecimal(successNum + failureNum), 2, BigDecimal.ROUND_HALF_DOWN);
         BigDecimal allSecond = executeAllMilliTimeBig.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_DOWN);
         BigDecimal QPS = executeCount.divide(allSecond, 0, BigDecimal.ROUND_HALF_DOWN);
@@ -113,7 +113,7 @@ class Monitor {
         System.out.println("EndAt: " + endAtDisplay + "");
         System.out.println("Times: " + (endAt - startAt) + "ms");
         System.out.println("AllRequest-num: " + executeCount);
-        System.out.println("PerRequest-AvgPerTimes: " + averagePerExecuteMilli + "s");
+        System.out.println("PerRequest-AvgPerTimes: " + averagePerExecuteMilli + "ms");
         System.out.println("Request-Qualified-num: " + successNum + "");
         System.out.println("Request-Unqualified-num: " + failureNum + "");
         System.out.println("Request-Pass rate:" + passRate.doubleValue() * 100 + "%");
